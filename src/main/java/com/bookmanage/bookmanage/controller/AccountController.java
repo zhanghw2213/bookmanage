@@ -6,6 +6,7 @@ import com.bookmanage.bookmanage.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,6 +18,7 @@ public class AccountController {
     return accountModel.getAccount(request);
   }
 
+  @GetMapping("account/create")
   public Integer createAccount(Account account) {
     return accountModel.createAccount(account);
   }
