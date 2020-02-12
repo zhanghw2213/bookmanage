@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    username: root
+    password:
+    url: jdbc:mysql://localhost:3306/book_manage
+    type: com.alibaba.druid.pool.DruidDataSource
