@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
   @Autowired
   private AccountModel accountModel;
-  @GetMapping("/account/login")
+  @PostMapping("/account/login")
   public Account getAccount(LoginRequest request) {
     return accountModel.getAccount(request);
   }
 
-  @GetMapping("account/create")
+  @PostMapping("account/create")
   public Integer createAccount(Account account) {
     return accountModel.createAccount(account);
   }
