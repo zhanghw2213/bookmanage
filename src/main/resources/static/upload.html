@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" href="/assets/img/efo-favicon.png"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/fileinput.min.css">
+    <link rel="stylesheet" href="/assets/css/glyphicons.css">
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/jquery-3.3.1.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/layer.js"></script>
+    <script src="/assets/js/vue.js"></script>
+    <script src="/assets/js/piexif.min.js"></script>
+    <script src="/assets/js/sortable.min.js"></script>
+    <script src="/assets/js/purify.min.js"></script>
+    <script src="/assets/js/fileinput.min.js"></script>
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/utils.js"></script>
+
+    <link rel="stylesheet" href="/assets/css/style.css"/>
+    <title>上传</title>
+</head>
+<body id="particles-js">
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-10 offset-1 offset-sm-0">
+            <div class="row content-box rounded">
+                <div class="col-sm-12 col-12 offset-sm-0">
+                    <br/>
+                    <div class="row form-inline">
+                        <div class="col-sm-9 col-7">
+                            <input class="form-control w-100" title="论文题目" type="text" id="title"
+                                   placeholder="论文题目"/>
+                        </div>
+                    </div><br/>
+                    <div class="row form-inline">
+                        <div class="col-sm-9 col-7">
+                            <input class="form-control w-100" title="作者" type="text" id="author_name"
+                                   placeholder="作者"/>
+                        </div>
+                    </div><br/>
+                    <div class="row form-inline">
+                        <div class="col-sm-9 col-7">
+                            <input class="form-control w-100" title="出处" type="text" id="source"
+                                   placeholder="出处"/>
+                        </div>
+                    </div><br/>
+                    <div class="row form-inline">
+                        <div class="col-sm-9 col-7">
+                            <input type="datetime-local" class="form-control w-100" title="发表时间" id="push_date"
+                                   placeholder="发表时间"/>
+                        </div>
+                    </div><br/>
+
+                </div>
+
+                <div class="col-sm-12 col-12 offset-sm-0"><br/>
+                    <input id="file-input" class="form-control file" multiple data-max-file-count="100" name="file"
+                           type="file"/><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="row text-center" id="footer"></div>
+    <br/>
+</div>
+<script src="/assets/js/particles.js"></script>
+<script src="/assets/js/default.js"></script>
+<script src="/assets/js/upload.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
