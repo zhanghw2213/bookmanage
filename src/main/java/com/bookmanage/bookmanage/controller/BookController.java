@@ -65,7 +65,7 @@ public class BookController {
     books.forEach(book -> {
       List<String> absolutePaths = Arrays
               .stream(book.getPath().split(","))
-              .map(path -> System.getProperty("user.dir") + FileUtil.FILE_PATH + path)
+              .map(path -> System.getProperty("user.dir").replaceAll("/","\\\\") + FileUtil.FILE_PATH + path)
               .collect(Collectors.toList());
       book.setPath(StringUtils.join(absolutePaths, ','));
     });
