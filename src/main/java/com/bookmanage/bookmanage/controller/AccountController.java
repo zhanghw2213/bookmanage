@@ -1,6 +1,7 @@
 package com.bookmanage.bookmanage.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bookmanage.bookmanage.Constant;
 import com.bookmanage.bookmanage.bean.Account;
 import com.bookmanage.bookmanage.model.AccountModel;
 import com.bookmanage.bookmanage.request.LoginRequest;
@@ -60,7 +61,9 @@ public class AccountController {
     Account account = Account.builder().id(id).password(password).build();
     try {
       accountModel.updateAccount(account);
-      jsonObject.put("result","success");
+      jsonObject.put("message", JSONObject.toJSONString(account));
+      jsonObject.put(Constant.RESULT,Constant.SUCCESS);
+
     }catch (Throwable e) {
       jsonObject.put("result", "faild");
     }
