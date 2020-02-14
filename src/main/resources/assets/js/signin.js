@@ -14,6 +14,20 @@ if (!window.location.href.replace(/https?:\/\/[a-zA-Z0-9.]*(:\d+)?/g, "").starts
     window.location.href = "/signin#login";
 }
 
+var cookieStart = document.cookie.indexOf("token");
+var cookieValue = null;
+if (cookieStart > -1) {
+    var cookieEnd = document.cookie.indexOf(';', cookieStart);
+    if (cookieEnd == -1) {
+        cookieEnd = document.cookie.length;
+    }
+    cookieValue = document.cookie.substring(cookieStart, cookieEnd);
+}
+// token="zhangsan@@123"
+let name = cookieValue.substring(cookieValue.indexOf("\"")+1,cookieValue.indexOf("@@"));
+let password = cookieValue.substring(cookieValue.indexOf("@@")+2,cookieValue.length-1);
+$("#username").val(name);
+$("#email").val(password);
 function reset() {
     var email = $("#res-email").val();
     var code = $("#res-email-verify").val();
@@ -77,15 +91,25 @@ function register() {
 }
 
 function login() {
-    var username = $("#loginName").val();
+    var name = $("#loginName").val();
     var password = $("#password").val();
+    var remember = document.getElementById("remember").checked;
     if (username && password) {
         $.ajax({
             url: "/user/login", type: "PUT", data: {
-                username: username,
+                name: name,
                 password: password,
+                remember:remember
             }, success: function (data) {
-                window.location.href = "/index";
+                console.log(data)
+                if (data.flag==true){
+                    if (data.token != null && data.token != undefined){
+                        document.cookie = "token=" + data.token;
+                    }
+                    window.location.href = "/index";
+                } else {
+                    alerts("用户名或密码不正确");
+                }
             }
         });
     } else {
