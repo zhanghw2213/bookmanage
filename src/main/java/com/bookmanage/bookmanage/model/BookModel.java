@@ -8,6 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface BookModel {
-  @Select("selelct * from t_book where ")
   public List<Book> getBooks(Book bookSearchCondition);
+  public Boolean saveBook(Book book);
 }

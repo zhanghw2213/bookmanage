@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bookmanage.bookmanage.model.BookModel">
+    <select id="getBooks" resultType="com.bookmanage.bookmanage.bean.Book">
+        select * from t_book
+        <where>
+        1 = 1
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="accountId != null">
+                and account_id = #{accountId}
+            </if>
+            <if test="tittle != null">
+                and tittle = #{tittle}
+            </if>
+            <if test="authorName != null">
+                and author_name = #{authorName}
+            </if>
+            <if test="source != null">
+                and source = #{source}
+            </if>
+            <if test="verified != null">
+                and verifyed = #{verified}
+            </if>
+            <if test="pushDate != null">
+                and push_date = #{pushDate}
+            </if>
+        </where>
+    </select>
+    <insert id="saveBook" parameterType="com.bookmanage.bookmanage.bean.Book" >
+        insert into t_book (account_id,title,author_name,source,path,verifyed,push_date) value (#{accountId},#{tittle},#{authorName},#{source},#{path},#{verified},#{pushDate})
+    </insert>
+</mapper>
