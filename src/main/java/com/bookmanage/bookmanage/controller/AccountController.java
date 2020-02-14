@@ -34,6 +34,7 @@ public class AccountController {
       session.setAttribute("account_info",account);
     }else
       jsonObject.put("flag",false);
+      jsonObject.put("account", account);
     //记住密码
     if (remember)
       jsonObject.put("token",name+"@@"+password);

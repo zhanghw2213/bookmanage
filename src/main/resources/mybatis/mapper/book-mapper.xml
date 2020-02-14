@@ -33,4 +33,36 @@
     <insert id="saveBook" parameterType="com.bookmanage.bookmanage.bean.Book" >
         insert into t_book (account_id,title,author_name,source,path,verifyed,push_date) value (#{accountId},#{title},#{authorName},#{source},#{path},#{verifyed},#{pushDate})
     </insert>
+    <update id="updateBook" parameterType="com.bookmanage.bookmanage.bean.Book">
+        update t_book
+        <set>
+            <if test="accountId != null">
+                account_id = #{accountId},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="authorName != null">
+                author_name = #{authorName},
+            </if>
+            <if test="source != null">
+                source = #{source},
+            </if>
+            <if test="path != null">
+                path = #{path},
+            </if>
+            <if test="verifyed != null">
+                verifyed = #{verifyed},
+            </if>
+            <if test="pushDate != null">
+                push_date = #{pushDate},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <select id="getBooksByKeyWord" parameterType="String" resultType="com.bookmanage.bookmanage.bean.Book">
+        select * from t_book where title like '%${keyWord}%' or author_name like '%${keyWord}%' or source like '%${keyWord}%'
+    </select>
 </mapper>

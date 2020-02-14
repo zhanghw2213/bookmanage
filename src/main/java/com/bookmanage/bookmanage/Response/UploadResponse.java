@@ -6,4 +6,5 @@ import lombok.Data;
 public class UploadResponse {
   String result;
   String fileName;
+  String absolutePath;
 }
