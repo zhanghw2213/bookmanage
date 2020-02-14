@@ -71,16 +71,17 @@
     <div class="row text-center" id="footer"></div>
     <br/>
 </div>
+
 <script src="/assets/js/particles.js"></script>
 <script src="/assets/js/default.js"></script>
 <script src="/assets/js/upload.js"></script>
 <script type="text/javascript">
+    let fileList = [];
     function submitBook() {
-        let fileList = [];
-        $(".file-preview-frame.krajee-default.kv-preview-thumb.file-preview-success").each(function () {
-            var fileName = $(this).attr("title");
-            fileList.push(fileName);
-        })
+        // $(".file-preview-frame.krajee-default.kv-preview-thumb.file-preview-success").each(function () {
+        //     var fileName = $(this).attr("title");
+        //     fileList.push(fileName);
+        // })
         console.log(fileList)
         //提交前先校验非空
         let title = $("#title").val();

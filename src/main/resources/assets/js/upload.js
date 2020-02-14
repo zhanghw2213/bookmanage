@@ -16,6 +16,7 @@ $("#file-input").fileinput({
     var json = data.response;
     console.log(json)
     if (json.result === "success") {
+        fileList.push(json.fileName);
         alerts("上传成功");
     } else {
         alerts("上传失败，文件不合法");
