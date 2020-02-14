@@ -26,13 +26,6 @@ import java.util.stream.Collectors;
 public class BookController {
   @Autowired
   private BookModel bookModel;
-    @RequestMapping(value = "/submit", method = RequestMethod.PUT)
-    public JSONObject getAccount(String tittle, String authorName, String Source, String fileList) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("result",true);
-        return jsonObject;
-    }
-
   @PostMapping
   @RequestMapping("/save")
   public JSONObject save(Book book) {
