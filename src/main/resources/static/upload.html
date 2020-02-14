@@ -83,6 +83,8 @@
         //     fileList.push(fileName);
         // })
         var userId = localStorage.getItem("userId");
+        var userName = localStorage.getItem("userName");
+        alert(userName)
         console.log(fileList)
         //提交前先校验非空
         let title = $("#title").val();
@@ -94,7 +96,8 @@
             return false;
         }
         $.ajax({
-            url: "/file/submit", type: "PUT", data: {
+            url: "/book/submit", type: "PUT", data: {
+                userName:userName,
                 userId: userId,
                 tittle: title,
                 authorName: author_name,
