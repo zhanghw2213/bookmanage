@@ -330,6 +330,7 @@ function setResources(resources, tabId) {
         alerts("糟糕，没有数据了");
     } else {
         $.each(resources, function (i, resource) {
+            var ifAdmin = 'block';
             /** @namespace resource.fileName */
             /** @namespace resource.createTime */
             /** @namespace resource.categoryName */
@@ -354,9 +355,9 @@ function setResources(resources, tabId) {
                 "上传时间：<b>" + new Date(date).format("yyyy-MM-dd hh:mm:ss") + "</b>&emsp;" +
                 "上传者：<b>" + resource.username + "</b>&emsp;" +
                 "论文出处：<b class='file-tag'>" + resource.source + "</b>" +
-                "是否审核通过：<b class='file-tag'>" + resource.verifyed + "</b>" +
+                "是否审核通过：<b class='file-tag'>" + (resource.verifyed==null?'未审核':(resource.verifyed==1?'通过':'不通过')) + "</b>" +
                 "</p></a></div>" +
-                "<button style='cursor: pointer; border-radius: 6px; background-color: #4CAF50;padding: 3px 21px;margin: 4px;' onclick='audit()'>审核</button>" +
+                "<button data-toggle='modal' data-target='#myModal' att1='"+resource.bookId+"' style='cursor: pointer; border-radius: 6px; background-color: #4CAF50;padding: 3px 21px;margin: 4px; display: "+ifAdmin+";'>审核</button>" +
                 "</div><br/></div></div><br/>";
         });
         if (offset > 0) {
@@ -369,7 +370,17 @@ function setResources(resources, tabId) {
     }
 }
 
-function audit() {
+function audit(auditCode) {
+    //$("#myModal").modal("show");
+    // layer.alert(
+    let bookId = $(this).attr("att1");
+    /*$.ajax({
+        url: "/book/audit", type: "PUT", data: {
+            bookId: bookId
+        }, success: function (data) {
+
+        }
+    });*/
     alert("审核通过");
 }
 
