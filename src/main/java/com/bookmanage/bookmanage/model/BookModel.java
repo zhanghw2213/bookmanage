@@ -9,8 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface BookModel {
-  public List<Book> getBooks(Book bookSearchCondition);
+  public List<Book> getBooks(BookSearch bookSearchCondition);
   public Boolean saveBook(Book book);
   public void updateBook(Book book);
-  public List<Book> getBooksByKeyWord(@Param("keyWord") String keyWord);
 }

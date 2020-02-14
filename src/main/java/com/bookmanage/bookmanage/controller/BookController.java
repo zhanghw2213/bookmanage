@@ -6,12 +6,20 @@ import com.bookmanage.bookmanage.Constant;
 import com.bookmanage.bookmanage.Response.GetBooksResponse;
 import com.bookmanage.bookmanage.bean.Book;
 import com.bookmanage.bookmanage.model.BookModel;
+import com.bookmanage.bookmanage.model.BookSearch;
+import com.bookmanage.bookmanage.request.SubmitRequest;
+import com.bookmanage.bookmanage.utils.FileUtil;
+import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/file")
 public class BookController {
   @Autowired
   private BookModel bookModel;
@@ -35,12 +43,13 @@ public class BookController {
     return jsonObject;
   }
 
-  @PostMapping
-  @RequestMapping("/user/upload")
-  public String getBooksByUser(Long userId) {
+  @GetMapping
+  @RequestMapping("/user/uploaded")
+  public String getBooksByUser(Long userId,String search) {
     GetBooksResponse response = new GetBooksResponse();
     try {
-      List<Book> books = bookModel.getBooks(Book.builder().accountId(userId).build());
+      List<Book> books = bookModel.getBooks(BookSearch.builder().accountId(userId).keyWord(search).build());
+      transBookPath(books);
       response.setBooks(books);
       response.setResult(Constant.SUCCESS);
     }catch (Throwable e){
@@ -49,26 +58,23 @@ public class BookController {
     return JSON.toJSONString(response);
   }
 
-  @PostMapping
-  @RequestMapping("/all")
-  public String getAllBooks() {
-    GetBooksResponse response = new GetBooksResponse();
-    try {
-      List<Book> books = bookModel.getBooks(Book.builder().verifyed(Boolean.TRUE).build());
-      response.setBooks(books);
-      response.setResult(Constant.SUCCESS);
-    }catch (Throwable e){
-      response.setResult(Constant.FAILED);
-    }
-    return JSON.toJSONString(response);
+  private void transBookPath(List<Book> books) {
+    books.forEach(book -> {
+      List<String> absolutePaths = Arrays
+              .stream(book.getPath().split(","))
+              .map(path -> System.getProperty("user.dir") + FileUtil.FILE_PATH + path)
+              .collect(Collectors.toList());
+      book.setPath(StringUtils.join(absolutePaths, ','));
+    });
   }
 
   @GetMapping
-  @RequestMapping("/keyWord")
-  public String getAllBooksByKeyWord(String keyWord) {
+  @RequestMapping("/all")
+  public String getAllBooks(String search) {
     GetBooksResponse response = new GetBooksResponse();
     try {
-      List<Book> books = bookModel.getBooksByKeyWord(keyWord);
+      List<Book> books = bookModel.getBooks(BookSearch.builder().verifyed(Boolean.TRUE).keyWord(search).build());
+      transBookPath(books);
       response.setBooks(books);
       response.setResult(Constant.SUCCESS);
     }catch (Throwable e){
@@ -90,4 +96,25 @@ public class BookController {
     }
     return jsonObject;
   }
+
+  @PutMapping
+  @RequestMapping("/submit")
+  public JSONObject submit(SubmitRequest request) {
+    JSONObject jsonObject = new JSONObject();
+    Book book = Book.builder().build();
+    book.setAccountId(request.getUserId());
+    book.setAuthorName(request.getAuthorName());
+    book.setPath(StringUtils.join(request.getFileList(), ','));
+    book.setSource(request.getSource());
+    book.setTitle(request.getTittle());
+    try {
+      bookModel.saveBook(book);
+      jsonObject.put(Constant.RESULT, Constant.SUCCESS);
+    }catch (Throwable e) {
+      jsonObject.put(Constant.RESULT, Constant.FAILED);
+      jsonObject.put(Constant.SUCCESS, e);
+    }
+    return jsonObject;
+  }
+
 }

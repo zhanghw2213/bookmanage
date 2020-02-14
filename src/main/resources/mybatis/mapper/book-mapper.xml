@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bookmanage.bookmanage.model.BookModel">
-    <select id="getBooks" resultType="com.bookmanage.bookmanage.bean.Book">
+    <select id="getBooks" parameterType="com.bookmanage.bookmanage.model.BookSearch" resultType="com.bookmanage.bookmanage.bean.Book">
         select * from t_book
         <where>
         1 = 1
@@ -28,6 +28,10 @@
             <if test="pushDate != null">
                 and push_date = #{pushDate}
             </if>
+            <if test="keyWord != null">
+                and (title like '%${keyWord}%' or author_name like '%${keyWord}%' or source like '%${keyWord}%')
+            </if>
+
         </where>
     </select>
     <insert id="saveBook" parameterType="com.bookmanage.bookmanage.bean.Book" >
@@ -62,7 +66,4 @@
             id = #{id}
         </where>
     </update>
-    <select id="getBooksByKeyWord" parameterType="String" resultType="com.bookmanage.bookmanage.bean.Book">
-        select * from t_book where title like '%${keyWord}%' or author_name like '%${keyWord}%' or source like '%${keyWord}%'
-    </select>
 </mapper>
