@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bookmanage.bookmanage.Constant;
 import com.bookmanage.bookmanage.Response.GetBooksResponse;
+import com.bookmanage.bookmanage.bean.Account;
 import com.bookmanage.bookmanage.bean.Book;
 import com.bookmanage.bookmanage.model.BookModel;
 import com.bookmanage.bookmanage.model.BookSearch;
@@ -11,15 +12,17 @@ import com.bookmanage.bookmanage.request.SubmitRequest;
 import com.bookmanage.bookmanage.utils.FileUtil;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/file")
+@RequestMapping("/book")
 public class BookController {
   @Autowired
   private BookModel bookModel;
@@ -44,7 +47,7 @@ public class BookController {
   }
 
   @GetMapping
-  @RequestMapping("/user/uploaded")
+  @RequestMapping("/user/upload")
   public String getBooksByUser(Long userId,String search) {
     GetBooksResponse response = new GetBooksResponse();
     try {
@@ -72,8 +75,11 @@ public class BookController {
   @RequestMapping("/all")
   public String getAllBooks(String search) {
     GetBooksResponse response = new GetBooksResponse();
+    HttpServletRequest request = AccountController.getRequest();
+    Account account = (Account)request.getSession().getAttribute("account_info");
+    Boolean flag = account.getIsManager() ? null : Boolean.TRUE;
     try {
-      List<Book> books = bookModel.getBooks(BookSearch.builder().verifyed(Boolean.TRUE).keyWord(search).build());
+      List<Book> books = bookModel.getBooks(BookSearch.builder().verifyed(flag).keyWord(search).build());
       transBookPath(books);
       response.setBooks(books);
       response.setResult(Constant.SUCCESS);

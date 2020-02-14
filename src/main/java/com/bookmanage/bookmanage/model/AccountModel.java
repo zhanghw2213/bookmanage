@@ -10,8 +10,8 @@ import java.util.List;
 
 @Mapper
 public interface AccountModel {
-  @Select("select * from t_account where name = #{username} and password = #{password}")
-  public Account getAccount(LoginRequest request);
+
+  public Account getAccount(Account account);
 
   @Insert("insert into t_account (is_manager,name,password,sex,age,address) value (#{isManager},#{name},#{password},#{sex},#{age},#{address})")
   public int createAccount(Account account);
