@@ -336,9 +336,11 @@ function setResources(resources, tabId) {
         $.each(resources.books, function (i, resource) {
 
             var param = "title="+resource.title+"&authorName="+resource.authorName+"&pushDate="+resource.pushDate+"&path="+resource.path+"&source="+resource.source;
+            param= param.replace(/\\/g,"@").replace(/\//g,"@");
+            param = encodeURI(encodeURI(param));
             var isDownloaded = "#downloaded-content" === tabId;
             var date = isDownloaded ? resource.downloadTime : resource.createTime;
-            contentHtml += "<div class='row content-box rounded' data-id='" + resource.id + "'>"+
+            contentHtml += "<div style='margin-bottom: 7px;' class='row content-box rounded' data-id='" + resource.id + "'>"+
                 "<div class='col-sm-11 col-12'>" +
                 /*"<a href='down.html?" +
                 "title="+resource.title+"" +
@@ -352,12 +354,12 @@ function setResources(resources, tabId) {
                 "论文题目：<b>" + resource.title + "</b>&emsp;" +
                 "论文作者：<b class='file-category'>" + resource.authorName + "</b>&emsp;" +
                 "发表时间：<b class='file-category'>" + resource.pushDate + "</b>&emsp;" +
-                "上传者：<b>" + resource.username + "</b>&emsp;" +
-                "论文出处：<b class='file-tag'>" + resource.source + "</b>" +
-                "是否审核通过：<b class='file-tag'>" + (resource.verifyed==null?'未审核':(resource.verifyed==1?'通过':'不通过')) + "</b>" +
+                "上传者：<b class='file-category'>" + resource.username + "</b>&emsp;" +
+                "论文出处：<b class='file-category'>" + resource.source + "</b>&emsp;" +
+                "是否审核通过：<b class='file-category'>" + (resource.verifyed==null?'未审核':(resource.verifyed==1?'通过':'不通过')) + "</b>" +
                 "</p></a></div>" +
                 "<button data-toggle='modal' data-target='#myModal' att1='"+resource.bookId+"' style='cursor: pointer; border-radius: 6px; background-color: #4CAF50;padding: 3px 21px;margin: 4px; display: "+ifAdmin+";'>审核</button>" +
-                "</div><br/></div></div><br/>";
+                "</div></div></div>";
         });
         /*if (offset > 0) {
             $(tabId).append(contentHtml);
