@@ -77,8 +77,22 @@ function register() {
 }
 
 function login() {
+    var username = $("#loginName").val();
+    var password = $("#password").val();
+    if (username && password) {
+        $.ajax({
+            url: "/user/login", type: "PUT", data: {
+                username: username,
+                password: password,
+            }, success: function (data) {
+                window.location.href = "/index";
+            }
+        });
+    } else {
+        alerts("用户名或密码不能为空");
+    }
     /** @namespace globalConfig.allowLogin */
-    if (globalConfig.allowLogin) {
+    /*if (globalConfig.allowLogin) {
         var username = $("#loginName").val();
         var password = $("#password").val();
         var remember = document.getElementById("remember").checked;
@@ -109,7 +123,7 @@ function login() {
         }
     } else {
         alerts("该站点已禁止登录，请联系管理员");
-    }
+    }*/
 }
 
 
