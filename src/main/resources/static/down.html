@@ -38,7 +38,7 @@
                     </div><br/>
                     <div class="row form-inline">
                         <div class="col-sm-9 col-7">
-                            <input readonly="readonly" class="form-control w-100" title="作者" type="text" id="author_name"
+                            <input readonly="readonly" class="form-control w-100" title="作者" type="text" id="authorName"
                                    placeholder="作者"/>
                         </div>
                     </div><br/>
@@ -50,7 +50,7 @@
                     </div><br/>
                     <div class="row form-inline">
                         <div class="col-sm-9 col-7">
-                            <input readonly="readonly" type="date" class="form-control w-100" title="发表时间" id="push_date"
+                            <input readonly="readonly" class="form-control w-100" title="发表时间" id="pushDate"
                                    placeholder="发表时间"/>
                         </div>
                     </div><br/>
@@ -58,11 +58,9 @@
                         <div class="col-sm-9 col-7">
                             <h3>附件：</h3>
                         </div>
-                        <div class="col-sm-9 col-7">
+                        <div id="attachments" class="col-sm-9 col-7">
                             <h4><a data-toggle="tooltip" class="visit-url" href="C:\Users\MI\Desktop\upload\20200213\949467508.zip" target="_blank" data-description="" title="" data-original-title="">949467508.zip</a></h4>
-                        </div>
-                        <div class="col-sm-9 col-7">
-                            <h4><a data-toggle="tooltip" class="visit-url" href="C:\Users\MI\Desktop\upload\20200213\949467508.zip" target="_blank" data-description="" title="" data-original-title="">55555.zip</a></h4>
+                            <h4><a data-toggle="tooltip" class="visit-url" href="C:\Users\MI\Desktop\upload\20200213\949467508.zip" target="_blank" data-description="" title="" data-original-title="">949467508.zip</a></h4>
                         </div>
                     </div><br/>
                 </div>
@@ -83,7 +81,37 @@
 <script src="/assets/js/upload.js"></script>
 <script type="text/javascript">
     var href = window.location.href;
+    var href = decodeURI(decodeURI(href));
     console.log(href)
+    //http://localhost:8080/down.html?title=北黄海喷漆&authorName=Z.H.W&pushDate=20180909&path=C:@Users@MI@Desktop@zhanghw-dev@bookmanage@file@c&source=鸽子楼
+    href = href.substring(href.indexOf("?")+1);
+    console.log(href);
+    var array = href.split("&");
+    for (var a of array){
+        var kv = a.split("=");
+        var temp = kv[1].replace(/\@/g,"/");
+        console.log(kv[0]);
+        console.log(temp);
+        if (kv[0]=="pushDate"){
+            temp = temp.substring(0,4)+"年"+temp.substring(5,6)+"月"+temp.substring(7,8)+"日";
+        }
+        if (kv[0] == "path") {
+            console.log(temp);
+            var pathArray = temp.split(",");
+            var ahtml = '';
+            for (var a of pathArray){
+                var fileName = a.substring(a.lastIndexOf("/")+1);
+                ahtml += '<h4><a data-toggle="tooltip" class="visit-url" href="'+a+'" target="_blank" data-description="" title="" data-original-title="">'+fileName+'</a></h4>';
+            }
+            $("#attachments").html(ahtml);
+
+
+
+        }
+        $("#"+kv[0]).val(temp);
+
+    }
+
 </script>
 </body>
 </html>

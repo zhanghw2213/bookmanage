@@ -336,6 +336,8 @@ function setResources(resources, tabId) {
         $.each(resources.books, function (i, resource) {
 
             var param = "title="+resource.title+"&authorName="+resource.authorName+"&pushDate="+resource.pushDate+"&path="+resource.path+"&source="+resource.source;
+            param= param.replace(/\\/g,"@").replace(/\//g,"@");
+            param = encodeURI(encodeURI(param));
             var isDownloaded = "#downloaded-content" === tabId;
             var date = isDownloaded ? resource.downloadTime : resource.createTime;
             contentHtml += "<div style='margin-bottom: 7px;' class='row content-box rounded' data-id='" + resource.id + "'>"+
