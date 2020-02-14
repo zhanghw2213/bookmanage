@@ -77,39 +77,21 @@ function register() {
 }
 
 function login() {
-    /** @namespace globalConfig.allowLogin */
-    if (globalConfig.allowLogin) {
-        var username = $("#loginName").val();
-        var password = $("#password").val();
-        var remember = document.getElementById("remember").checked;
-        if (username && password) {
-            layer.load(1);
-            $.ajax({
-                url: "/user/login", type: "PUT", data: {
-                    username: username,
-                    password: password,
-                    auto: remember,
-                    token: getCookie("token")
-                }, success: function (data) {
-                    layer.closeAll();
-                    var json = JSON.parse(data);
-                    if (json.status === "success") {
-                        if (remember) {
-                            var exp = new Date();
-                            document.cookie = "token=" + json.token + ";expires=" + exp.setTime(exp.getTime() + 30 * 24 * 60 * 60 * 1000);
-                        }
-                        window.location.href = "/index";
-                    } else {
-                        alerts("登录失败，用户名或密码不正确");
-                    }
-                }
-            });
-        } else {
-            alerts("用户名或密码不能为空");
-        }
+    var username = $("#loginName").val();
+    var password = $("#password").val();
+    if (username && password) {
+        $.ajax({
+            url: "/user/login", type: "PUT", data: {
+                username: username,
+                password: password,
+            }, success: function (data) {
+                window.location.href = "/index";
+            }
+        });
     } else {
-        alerts("该站点已禁止登录，请联系管理员");
+        alerts("用户名或密码不能为空");
     }
+
 }
 
 
