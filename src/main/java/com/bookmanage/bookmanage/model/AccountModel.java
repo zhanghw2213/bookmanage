@@ -15,4 +15,6 @@ public interface AccountModel {
 
   @Insert("insert into t_account (is_manager,name,password,sex,age,address) value (#{isManager},#{name},#{password},#{sex},#{age},#{address})")
   public int createAccount(Account account);
+
+  public void updateAccount(Account account);
 }

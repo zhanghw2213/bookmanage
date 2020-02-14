@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+     1、mybatis可以使用properties来引入外部properties配置文件的内容
+     resource是引入类路径下的资源
+     url:引入网络网络路径或磁盘路径下的资源
+     -->
+    <!-- 将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件（mybatis-config.xml）中 -->
+</configuration>

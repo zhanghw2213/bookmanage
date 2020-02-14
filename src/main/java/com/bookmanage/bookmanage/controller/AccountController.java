@@ -19,15 +19,15 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/user")
 public class AccountController {
 
-  private final JSONObject jsonObject = new JSONObject();
-
   @Autowired
   private AccountModel accountModel;
 
   @RequestMapping(value = "/login", method = RequestMethod.PUT)
   public JSONObject getAccount(String name, String password, boolean remember) {
-    Account account = Account.builder().name("zhangsan").password("123").build();
-    if (account.getName().equals(name) && account.getPassword().equals(password)){
+    JSONObject jsonObject = new JSONObject();
+    LoginRequest request = LoginRequest.builder().password(password).username(name).build();
+    Account account = accountModel.getAccount(request);
+    if (account != null){
       jsonObject.put("flag",true);
       HttpSession session = getRequest().getSession();
       session.setAttribute("account_info",account);
@@ -39,9 +39,32 @@ public class AccountController {
     return jsonObject;
   }
 
-  @PostMapping("account/create")
-  public Integer createAccount(Account account) {
-    return accountModel.createAccount(account);
+  @PostMapping("/create")
+  public JSONObject createAccount(Account account) {
+    JSONObject jsonObject = new JSONObject();
+    try {
+      if (accountModel.createAccount(account) > 0) {
+        jsonObject.put("flag", true);
+      }else {
+        jsonObject.put("flag", false);
+      }
+    }catch (Throwable e) {
+      jsonObject.put("flag", false);
+    }
+    return jsonObject;
+  }
+
+  @PostMapping("/reset")
+  public JSONObject resetPwd(Long id, String password) {
+    JSONObject jsonObject = new JSONObject();
+    Account account = Account.builder().id(id).password(password).build();
+    try {
+      accountModel.updateAccount(account);
+      jsonObject.put("result","success");
+    }catch (Throwable e) {
+      jsonObject.put("result", "faild");
+    }
+    return jsonObject;
   }
 
   private HttpServletRequest getRequest() {
