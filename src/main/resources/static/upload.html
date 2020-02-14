@@ -61,6 +61,9 @@
                     <input id="file-input" class="form-control file" multiple data-max-file-count="100" name="file"
                            type="file"/><br/>
                 </div>
+                <div class="col-sm-12 col-12 offset-sm-0"><br/>
+                    <button id="submitBtn" class="btn btn-primary btn-block" onclick="submitBook();">提交</button>
+                </div>
             </div>
         </div>
     </div>
@@ -72,7 +75,53 @@
 <script src="/assets/js/default.js"></script>
 <script src="/assets/js/upload.js"></script>
 <script type="text/javascript">
+    function submitBook() {
+        let fileList = [];
+        $(".file-preview-frame.krajee-default.kv-preview-thumb.file-preview-success").each(function () {
+            var fileName = $(this).attr("title");
+            fileList.push(fileName);
+        })
+        console.log(fileList)
+        //提交前先校验非空
+        let title = $("#title").val();
+        let author_name = $("#author_name").val();
+        let source = $("#source").val();
+        let push_date = $("#push_date").val();
+        if (isblank(title) || isblank(author_name) || isblank(source) || isblank(push_date)){
+            alerts("请补充完整信息后提交");
+            return false;
+        }
+        $.ajax({
+            url: "/book/submit", type: "PUT", data: {
+                tittle: title,
+                authorName: author_name,
+                Source: source,
+                fileList:fileList.toString()
+            }, success: function (data) {
+                console.log(data)
+                if (data.result==true){
+                    // window.location.href = "/index";
+                    alerts("提交成功")
+                    setTimeout(function () {
+                        window.close();
+                    },1000)
 
+                } else {
+                    alerts("提交失败");
+                }
+            }
+        });
+
+
+
+
+    }
+    //校验为空
+    function isblank(val) {
+        if (val == null || val == undefined || val == ""){
+            return true;
+        }
+    }
 </script>
 </body>
 </html>
