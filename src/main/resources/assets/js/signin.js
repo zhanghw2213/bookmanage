@@ -102,10 +102,15 @@ function login() {
                 remember:remember
             }, success: function (data) {
                 console.log(data)
+
                 if (data.flag==true){
                     if (data.token != null && data.token != undefined){
                         document.cookie = "token=" + data.token;
+
                     }
+                    console.log(data.account)
+                    localStorage.setItem("isManager",data.account.isManager);
+                    localStorage.setItem("userId",data.account.id);
                     window.location.href = "/index";
                 } else {
                     alerts("用户名或密码不正确");

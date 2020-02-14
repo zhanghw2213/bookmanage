@@ -82,6 +82,8 @@
         //     var fileName = $(this).attr("title");
         //     fileList.push(fileName);
         // })
+
+        var userId = localStorage.getItem("userId");
         console.log(fileList)
         //提交前先校验非空
         let title = $("#title").val();
@@ -94,9 +96,10 @@
         }
         $.ajax({
             url: "/book/submit", type: "PUT", data: {
+                userId: userId,
                 tittle: title,
                 authorName: author_name,
-                Source: source,
+                source: source,
                 fileList:fileList.toString()
             }, success: function (data) {
                 console.log(data)
