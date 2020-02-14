@@ -247,6 +247,21 @@
     </div>
     <div class="row text-center" id="footer"></div>
 </div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+                <h4 style="position: relative; left: 50%;" class="modal-title" id="myModalLabel">审核</h4>
+            </div>
+            <div class="modal-footer">
+                <button onclick="audit(1)" type="button" class="btn btn-primary">通过</button>
+                <button onclick="audit(0)" type="button" class="btn btn-primary">不通过</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
 <!--文本编辑模态框-->
 <div class="modal fade" id="edit-file-modal">
