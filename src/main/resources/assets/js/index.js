@@ -298,31 +298,36 @@ function getUserDownloaded() {
 function getUserUploaded() {
     currentTab = "#uploaded-content";
     layer.load(1);
-    $.get("/file/user/uploaded", {offset: offset, search: search}, function (data) {
+    $.get("/book/user/upload", {offset: offset, search: search}, function (data) {
         layer.closeAll();
-        try {
-            setResources(JSON.parse(data), currentTab);
+        setResources(JSON.parse(data), currentTab);
+        /*try {
+
         } catch (e) {
             window.location.href = "/signin";
-        }
+        }*/
     });
 }
 
 function getResource(orderBy) {
     currentTab = "#resources-content";
     layer.load(1);
-    $.get("/file/all", {
+    $.get("/book/all", {
         offset: offset,
         categoryId: $("#category").val(),
         orderBy: orderBy,
         search: search
     }, function (data) {
+        console.log(data)
         layer.closeAll();
         setResources(JSON.parse(data), currentTab);
     });
 }
 
 function setResources(resources, tabId) {
+    var isManager = localStorage.getItem("isManager");
+    console.log(isManager)
+    var ifAdmin = isManager=='true'? 'block':'none';
     var contentHtml = "";
     search = "";
     if (resources.length < 1) {
@@ -330,7 +335,7 @@ function setResources(resources, tabId) {
         alerts("糟糕，没有数据了");
     } else {
         $.each(resources, function (i, resource) {
-            var ifAdmin = 'block';
+
             /** @namespace resource.fileName */
             /** @namespace resource.createTime */
             /** @namespace resource.categoryName */
