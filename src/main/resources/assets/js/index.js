@@ -298,7 +298,7 @@ function getUserDownloaded() {
 function getUserUploaded() {
     currentTab = "#uploaded-content";
     layer.load(1);
-    $.get("/file/user/uploaded", {offset: offset, search: search}, function (data) {
+    $.get("/book/user/uploaded", {offset: offset, search: search}, function (data) {
         layer.closeAll();
         setResources(JSON.parse(data), currentTab);
         /*try {
@@ -312,7 +312,7 @@ function getUserUploaded() {
 function getResource(orderBy) {
     currentTab = "#resources-content";
     layer.load(1);
-    $.get("/file/all", {
+    $.get("/book/all", {
         offset: offset,
         categoryId: $("#category").val(),
         orderBy: orderBy,
@@ -334,17 +334,20 @@ function setResources(resources, tabId) {
         alerts("糟糕，没有数据了");
     } else {
         $.each(resources.books, function (i, resource) {
+
+            var param = "title="+resource.title+"&authorName="+resource.authorName+"&pushDate="+resource.pushDate+"&path="+resource.path+"&source="+resource.source;
             var isDownloaded = "#downloaded-content" === tabId;
             var date = isDownloaded ? resource.downloadTime : resource.createTime;
             contentHtml += "<div class='row content-box rounded' data-id='" + resource.id + "'>"+
                 "<div class='col-sm-11 col-12'>" +
-                "<a href='down.html?" +
+                /*"<a href='down.html?" +
                 "title="+resource.title+"" +
                 "&authorName="+resource.authorName +
                 "&pushDate="+resource.pushDate+"" +
                 "&path="+resource.path+"" +
                 "&source="+resource.source+"" +
-                "' target='_blank' style='cursor: pointer'>"+
+                "' target='_blank' style='cursor: pointer'>"+*/
+                "<a href='down.html?"+param+"' target='_blank' style='cursor: pointer'>"+
                 "<p>" +
                 "论文题目：<b>" + resource.title + "</b>&emsp;" +
                 "论文作者：<b class='file-category'>" + resource.authorName + "</b>&emsp;" +

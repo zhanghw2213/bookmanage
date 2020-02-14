@@ -111,6 +111,7 @@ function login() {
                     console.log(data.account)
                     localStorage.setItem("isManager",data.account.isManager);
                     localStorage.setItem("userId",data.account.id);
+                    localStorage.setItem("userName",data.account.name);
                     window.location.href = "/index";
                 } else {
                     alerts("用户名或密码不正确");
