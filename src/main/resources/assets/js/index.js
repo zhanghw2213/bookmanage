@@ -298,7 +298,7 @@ function getUserDownloaded() {
 function getUserUploaded() {
     currentTab = "#uploaded-content";
     layer.load(1);
-    $.get("/file/user/uploaded", {offset: offset, search: search}, function (data) {
+    $.get("/book/user/uploaded", {offset: offset, search: search}, function (data) {
         layer.closeAll();
         setResources(JSON.parse(data), currentTab);
         /*try {
@@ -312,7 +312,7 @@ function getUserUploaded() {
 function getResource(orderBy) {
     currentTab = "#resources-content";
     layer.load(1);
-    $.get("/file/all", {
+    $.get("/book/all", {
         offset: offset,
         categoryId: $("#category").val(),
         orderBy: orderBy,
