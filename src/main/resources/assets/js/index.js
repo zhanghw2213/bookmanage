@@ -298,7 +298,7 @@ function getUserDownloaded() {
 function getUserUploaded() {
     currentTab = "#uploaded-content";
     layer.load(1);
-    $.get("/book/user/upload", {offset: offset, search: search}, function (data) {
+    $.get("/file/user/uploaded", {offset: offset, search: search}, function (data) {
         layer.closeAll();
         setResources(JSON.parse(data), currentTab);
         /*try {
@@ -312,7 +312,7 @@ function getUserUploaded() {
 function getResource(orderBy) {
     currentTab = "#resources-content";
     layer.load(1);
-    $.get("/book/all", {
+    $.get("/file/all", {
         offset: offset,
         categoryId: $("#category").val(),
         orderBy: orderBy,
@@ -326,38 +326,29 @@ function getResource(orderBy) {
 
 function setResources(resources, tabId) {
     var isManager = localStorage.getItem("isManager");
-    console.log(isManager)
     var ifAdmin = isManager=='true'? 'block':'none';
     var contentHtml = "";
     search = "";
-    if (resources.length < 1) {
+    if (resources.books.length < 1) {
         offset -= 1;
         alerts("糟糕，没有数据了");
     } else {
-        $.each(resources, function (i, resource) {
-
-            /** @namespace resource.fileName */
-            /** @namespace resource.createTime */
-            /** @namespace resource.categoryName */
-            /** @namespace resource.checkTimes */
-            /** @namespace resource.downloadTimes */
-            /** @namespace resource.visitUrl */
-            /** @namespace resource.downloadTime */
-            /**
-             * 暂时不考虑查看次数
-             * @code &emsp;查看次数：<b>" + resource.checkTimes + "</b>
-             */
+        $.each(resources.books, function (i, resource) {
             var isDownloaded = "#downloaded-content" === tabId;
             var date = isDownloaded ? resource.downloadTime : resource.createTime;
             contentHtml += "<div class='row content-box rounded' data-id='" + resource.id + "'>"+
-
                 "<div class='col-sm-11 col-12'>" +
-                "<a href='down.html' target='_blank' style='cursor: pointer'>"+
+                "<a href='down.html?" +
+                "title="+resource.title+"" +
+                "&authorName="+resource.authorName +
+                "&pushDate="+resource.pushDate+"" +
+                "&path="+resource.path+"" +
+                "&source="+resource.source+"" +
+                "' target='_blank' style='cursor: pointer'>"+
                 "<p>" +
                 "论文题目：<b>" + resource.title + "</b>&emsp;" +
-                "论文作者：<b class='file-category'>" + resource.authorname + "</b>&emsp;" +
-                "发表时间：<b class='file-category'>" + resource.authorname + "</b>&emsp;" +
-                "上传时间：<b>" + new Date(date).format("yyyy-MM-dd hh:mm:ss") + "</b>&emsp;" +
+                "论文作者：<b class='file-category'>" + resource.authorName + "</b>&emsp;" +
+                "发表时间：<b class='file-category'>" + resource.pushDate + "</b>&emsp;" +
                 "上传者：<b>" + resource.username + "</b>&emsp;" +
                 "论文出处：<b class='file-tag'>" + resource.source + "</b>" +
                 "是否审核通过：<b class='file-tag'>" + (resource.verifyed==null?'未审核':(resource.verifyed==1?'通过':'不通过')) + "</b>" +
@@ -365,11 +356,12 @@ function setResources(resources, tabId) {
                 "<button data-toggle='modal' data-target='#myModal' att1='"+resource.bookId+"' style='cursor: pointer; border-radius: 6px; background-color: #4CAF50;padding: 3px 21px;margin: 4px; display: "+ifAdmin+";'>审核</button>" +
                 "</div><br/></div></div><br/>";
         });
-        if (offset > 0) {
+        /*if (offset > 0) {
             $(tabId).append(contentHtml);
         } else {
             $(tabId).html(contentHtml);
-        }
+        }*/
+        $(tabId).html(contentHtml);
         $('[data-toggle="tooltip"]').tooltip();
         setCSS();
     }

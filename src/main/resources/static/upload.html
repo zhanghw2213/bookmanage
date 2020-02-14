@@ -82,7 +82,6 @@
         //     var fileName = $(this).attr("title");
         //     fileList.push(fileName);
         // })
-
         var userId = localStorage.getItem("userId");
         console.log(fileList)
         //提交前先校验非空
@@ -95,7 +94,7 @@
             return false;
         }
         $.ajax({
-            url: "/book/submit", type: "PUT", data: {
+            url: "/file/submit", type: "PUT", data: {
                 userId: userId,
                 tittle: title,
                 authorName: author_name,
@@ -104,12 +103,10 @@
             }, success: function (data) {
                 console.log(data)
                 if (data.result==true){
-                    // window.location.href = "/index";
                     alerts("提交成功")
                     setTimeout(function () {
                         window.close();
-                    },1000)
-
+                    },1500)
                 } else {
                     alerts("提交失败");
                 }
