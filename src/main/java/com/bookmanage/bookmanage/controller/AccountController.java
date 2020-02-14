@@ -6,10 +6,7 @@ import com.bookmanage.bookmanage.bean.Account;
 import com.bookmanage.bookmanage.model.AccountModel;
 import com.bookmanage.bookmanage.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -26,8 +23,8 @@ public class AccountController {
   @RequestMapping(value = "/login", method = RequestMethod.PUT)
   public JSONObject getAccount(String name, String password, boolean remember) {
     JSONObject jsonObject = new JSONObject();
-    LoginRequest request = LoginRequest.builder().password(password).username(name).build();
-    Account account = accountModel.getAccount(request);
+    Account accountCondition = Account.builder().password(password).name(name).build();
+    Account account = accountModel.getAccount(accountCondition);
     if (account != null){
       jsonObject.put("flag",true);
       HttpSession session = getRequest().getSession();
@@ -71,7 +68,22 @@ public class AccountController {
     return jsonObject;
   }
 
-  private HttpServletRequest getRequest() {
+  @GetMapping
+  @RequestMapping("/info")
+  public JSONObject getUserInfo(Long userId) {
+    JSONObject jsonObject = new JSONObject();
+    try {
+      Account account = accountModel.getAccount(Account.builder().id(userId).build());
+      jsonObject.put(Constant.RESULT, Constant.SUCCESS);
+      jsonObject.put("account", account);
+    }catch (Throwable e) {
+      jsonObject.put(Constant.RESULT, Constant.FAILED);
+      jsonObject.put(Constant.ERROR, e);
+    }
+    return jsonObject;
+  }
+
+  public static HttpServletRequest getRequest() {
     return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
   }
 }

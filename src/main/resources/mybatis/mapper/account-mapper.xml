@@ -23,4 +23,28 @@
             id = #{id}
         </where>
     </update>
+    <select id="getAccount" parameterType="com.bookmanage.bookmanage.bean.Account" resultType="com.bookmanage.bookmanage.bean.Account">
+        select * from t_account
+            <where>
+            1 = 1
+            <if test="isManager != null">
+                and is_manager = #{isManager}
+            </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+            <if test="password != null">
+                and password = #{password}
+            </if>
+            <if test="sex != null">
+                and sex = #{sex}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="address != null">
+                and address = #{address}
+            </if>
+        </where>
+    </select>
 </mapper>
