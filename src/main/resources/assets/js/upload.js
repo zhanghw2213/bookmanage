@@ -25,7 +25,7 @@ $("#file-input").fileinput({
 
 $(document).on('ready', function () {
     $("#file-input").fileinput({
-        maxFilePreviewSize: 10240
+        maxFilePreviewSize: 51200
     });
 });
 
