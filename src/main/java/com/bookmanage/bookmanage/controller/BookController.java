@@ -58,9 +58,9 @@ public class BookController {
     books.forEach(book -> {
       List<String> absolutePaths = Arrays
               .stream(book.getPath().split(","))
-              .map(path -> System.getProperty("user.dir").replaceAll("/","\\\\") + FileUtil.FILE_PATH + path)
+              .map(path -> System.getProperty("user.dir") + FileUtil.FILE_PATH + path)
               .collect(Collectors.toList());
-      book.setPath(StringUtils.join(absolutePaths, ','));
+       book.setPath(StringUtils.join(absolutePaths, ','));
     });
   }
 
@@ -74,6 +74,10 @@ public class BookController {
     try {
       List<Book> books = bookModel.getBooks(BookSearch.builder().verifyed(flag).keyWord(search).build());
       transBookPath(books);
+      books.forEach(book -> {
+        book.setPath(book.getPath().replaceAll("\\\\", "/"));
+              }
+      );
       response.setBooks(books);
       response.setResult(Constant.SUCCESS);
     }catch (Throwable e){
