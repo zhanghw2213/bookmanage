@@ -106,6 +106,7 @@ public class BookController {
     book.setPath(StringUtils.join(request.getFileList(), ','));
     book.setSource(request.getSource());
     book.setTitle(request.getTittle());
+    book.setUserName(request.getUserName());
     try {
       bookModel.saveBook(book);
       jsonObject.put(Constant.RESULT, Constant.SUCCESS);

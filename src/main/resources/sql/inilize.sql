@@ -17,4 +17,5 @@ create table `t_book`(
    verifyed char(1), #是否审核过
    push_date bigint(20) #发表时间
 );
+alter table t_book add column user_name varchar(30);
 insert into t_account values (0,'1','admin','admin','男','100','未知');

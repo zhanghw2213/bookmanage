@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 public class SubmitRequest {
   private Long userId;
+  private String userName;
   private String tittle;
   private String authorName;
   private String source;
