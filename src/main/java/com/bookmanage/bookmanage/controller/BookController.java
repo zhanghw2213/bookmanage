@@ -7,10 +7,7 @@ import com.bookmanage.bookmanage.Response.GetBooksResponse;
 import com.bookmanage.bookmanage.bean.Book;
 import com.bookmanage.bookmanage.model.BookModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
@@ -64,5 +61,33 @@ public class BookController {
       response.setResult(Constant.FAILED);
     }
     return JSON.toJSONString(response);
+  }
+
+  @GetMapping
+  @RequestMapping("/keyWord")
+  public String getAllBooksByKeyWord(String keyWord) {
+    GetBooksResponse response = new GetBooksResponse();
+    try {
+      List<Book> books = bookModel.getBooksByKeyWord(keyWord);
+      response.setBooks(books);
+      response.setResult(Constant.SUCCESS);
+    }catch (Throwable e){
+      response.setResult(Constant.FAILED);
+    }
+    return JSON.toJSONString(response);
+  }
+
+  @PostMapping
+  @RequestMapping("/verify")
+  public JSONObject verify(Long bookId,Boolean verified) {
+    JSONObject jsonObject = new JSONObject();
+    try {
+      bookModel.updateBook(Book.builder().id(bookId).verifyed(verified).pushDate(System.currentTimeMillis()).build());
+      jsonObject.put(Constant.RESULT, Constant.SUCCESS);
+    }catch (Throwable e) {
+      jsonObject.put(Constant.RESULT, Constant.FAILED);
+      jsonObject.put(Constant.ERROR, e);
+    }
+    return jsonObject;
   }
 }

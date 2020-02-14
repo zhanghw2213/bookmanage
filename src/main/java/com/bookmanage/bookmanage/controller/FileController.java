@@ -33,6 +33,7 @@ public class FileController {
       file.transferTo(dest);
       response.setFileName(fileName);
       response.setResult("success");
+      response.setAbsolutePath(dest.getAbsolutePath());
       return JSON.toJSONString(response);
     } catch (Exception e) {
       e.printStackTrace();
