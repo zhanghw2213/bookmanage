@@ -132,16 +132,18 @@ function updatePassword() {
 }
 
 function getUserInfo() {
-    layer.load(1);
-    $.get("/user/info", function (data) {
+    // layer.load(1);
+    app.loginTime = new Date().format("yyyy-MM-dd hh:mm:ss");
+    app.username = localStorage.getItem("name");
+    /*$.get("/user/info", function (data) {
         layer.closeAll();
         try {
             var json = JSON.parse(data);
             userInfo = json;
             app.permission = json.permission;
-            /** @namespace app.lastLoginTime */
+            /!** @namespace app.lastLoginTime *!/
             app.loginTime = new Date(json.lastLoginTime).format("yyyy-MM-dd hh:mm:ss");
-            /** @namespace json.avator */
+            /!** @namespace json.avator *!/
             if (!isEmpty(json.avatar)) {
                 $("#avatar").attr("src", json.avatar);
             }
@@ -152,7 +154,7 @@ function getUserInfo() {
         } catch (e) {
             //window.location.href = "/signin";
         }
-    });
+    });*/
 }
 
 function showAvatarModal() {

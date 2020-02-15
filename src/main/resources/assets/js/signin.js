@@ -94,6 +94,9 @@ function login() {
                 remember:remember
             }, success: function (data) {
                 console.log(data)
+                localStorage.setItem("name",data.account.name);
+                localStorage.setItem("isManager",data.account.isManager);
+                localStorage.setItem("userId",data.account.id);
                 if (data.flag==true){
                     window.location.href = "/index";
                 } else {
