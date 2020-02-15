@@ -10,6 +10,7 @@ import com.bookmanage.bookmanage.model.BookModel;
 import com.bookmanage.bookmanage.model.BookSearch;
 import com.bookmanage.bookmanage.request.SubmitRequest;
 import com.bookmanage.bookmanage.utils.FileUtil;
+import com.google.common.collect.Lists;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -66,7 +67,7 @@ public class BookController {
 
   @GetMapping
   @RequestMapping("/all")
-  public String getAllBooks(String search) {
+  public String getAllBooks(String search, Integer offset) {
     GetBooksResponse response = new GetBooksResponse();
     HttpServletRequest request = AccountController.getRequest();
     Account account = (Account)request.getSession().getAttribute("account_info");
@@ -78,7 +79,10 @@ public class BookController {
         book.setPath(book.getPath().replaceAll("\\\\", "/"));
               }
       );
-      response.setBooks(books);
+      List<List<Book>> partitions = Lists.partition(books,10);
+      if (offset < partitions.size()) {
+        response.setBooks(partitions.get(offset));
+      }
       response.setResult(Constant.SUCCESS);
     }catch (Throwable e){
       response.setResult(Constant.FAILED);
@@ -120,5 +124,18 @@ public class BookController {
     }
     return jsonObject;
   }
-
+  @PutMapping
+  @RequestMapping("/audit")
+  public JSONObject submit(Long bookId, Integer auditCode) {
+    JSONObject jsonObject = new JSONObject();
+    Boolean verdifyed = auditCode.equals(1) ? Boolean.TRUE : Boolean.FALSE;
+    try {
+      bookModel.updateBook(Book.builder().verifyed(verdifyed).id(bookId).build());
+      jsonObject.put(Constant.RESULT, Constant.SUCCESS);
+    }catch (Throwable e) {
+      jsonObject.put(Constant.RESULT, Constant.FAILED);
+      jsonObject.put(Constant.SUCCESS, e);
+    }
+    return jsonObject;
+  }
 }
