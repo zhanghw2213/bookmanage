@@ -186,12 +186,21 @@ function getOrderBy() {
 $(document).ready(function () {
     $("#search").keyup(function () {
         /** @namespace window.event.keyCode */
+        search = $('#search').val();
         if (window.event.keyCode === 13) {
             search = $('#search').val();
             offset = 0;
             getPage();
         }
     });
+    /*$("#search").blur(function () {
+        /!** @namespace window.event.keyCode *!/
+        if (window.event.keyCode === 13) {
+            search = $('#search').val();
+            offset = 0;
+            getPage();
+        }
+    });*/
     $(".content-filter").change(function () {
         offset = 0;
         getResource(getOrderBy());
@@ -338,29 +347,20 @@ function setResources(resources, tabId) {
             param = encodeURI(encodeURI(param));
             var isDownloaded = "#downloaded-content" === tabId;
             var date = isDownloaded ? resource.downloadTime : resource.createTime;
-            /*contentHtml += "<div style='margin-bottom: 7px;' class='row content-box rounded' data-id='" + resource.id + "'>"+
-                "<div class='col-sm-11 col-12'>" +
-                "<a href='down.html?"+param+"' target='_blank' style='cursor: pointer'>"+
-                "<p>" +
-                "论文题目：<b>" + resource.title + "</b>&emsp;" +
-                "论文作者：<b class='file-category'>" + resource.authorName + "</b>&emsp;" +
-                "发表时间：<b class='file-category'>" + resource.pushDate + "</b>&emsp;" +
-                "上传者：<b class='file-category'>" + resource.username + "</b>&emsp;" +
-                "论文出处：<b class='file-category'>" + resource.source + "</b>&emsp;" +
-                "是否审核通过：<b class='file-category'>" + (resource.verifyed==null?'未审核':(resource.verifyed==1?'通过':'不通过')) + "</b>" +
-                "</p></a></div>" +
-                "<button data-toggle='modal' data-target='#myModal' att1='"+resource.bookId+"' style='cursor: pointer; border-radius: 6px; background-color: #4CAF50;padding: 3px 21px;margin: 4px; display: "+ifAdmin+";'>审核</button>" +
-                "</div></div></div>";*/
-                contentHtml +="<tr>"+
-                    "<td>"+(Number.parseInt(i)+1)+"</td>"+
-                    "<td><a href='down.html?"+param+"' target='_blank' style='cursor: pointer'>"+resource.title+"</a></td>"+
-                    "<td>"+resource.authorName+"</td>"+
-                    "<td>"+resource.pushDate+"</td>"+
-                    "<td>"+resource.source+"</td>"+
-                    "<td>"+resource.userName+"</td>"+
-                    "<td id='"+"+resource.bookId+"+"'>"+(resource.verifyed==null?'未审核':(resource.verifyed==1?'通过':'不通过'))+"</td>"+
-                    "<td><a onclick='showModel("+resource.bookId+")' style='cursor: pointer; text-align: center; margin: 4px; display: "+ifAdmin+";' att1='"+resource.bookId+"' href='#' >审核</a></td>"+
-                "</tr>";
+            var num = 0;
+            if (offset > 0){
+                num = $("#resources-content tr:last td:first")[0].innerText;
+            }
+            contentHtml +="<tr>"+
+                "<td>"+(Number.parseInt(num) +(Number.parseInt(i))+1)+"</td>"+
+                "<td><a href='down.html?"+param+"' target='_blank' style='cursor: pointer'>"+resource.title+"</a></td>"+
+                "<td>"+resource.authorName+"</td>"+
+                "<td>"+resource.pushDate+"</td>"+
+                "<td>"+resource.source+"</td>"+
+                "<td>"+resource.userName+"</td>"+
+                "<td id='"+"+resource.bookId+"+"'>"+(resource.verifyed==null?'未审核':(resource.verifyed==1?'通过':'不通过'))+"</td>"+
+                "<td><a onclick='showModel("+resource.bookId+")' style='cursor: pointer; text-align: center; margin: 4px; display: "+ifAdmin+";' att1='"+resource.bookId+"' href='#' >审核</a></td>"+
+            "</tr>";
         });
         if (offset > 0) {
             $(tabId).append(contentHtml);
