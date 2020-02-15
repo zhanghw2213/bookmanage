@@ -13,7 +13,7 @@ public interface AccountModel {
 
   public Account getAccount(Account account);
 
-  @Insert("insert into t_account (is_manager,name,password,sex,age,address) value (#{isManager},#{name},#{password},#{sex},#{age},#{address})")
+  @Insert("insert into t_account (name,password,sex,age,address) value (#{name},#{password},#{sex},#{age},#{address})")
   public int createAccount(Account account);
 
   public void updateAccount(Account account);
