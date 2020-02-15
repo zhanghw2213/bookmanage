@@ -54,9 +54,17 @@ public class AccountController {
   }
 
   @PostMapping("/reset")
-  public JSONObject resetPwd(Long id, String password) {
+  public JSONObject resetPwd(String name, String oldPassword, String newPassword) {
     JSONObject jsonObject = new JSONObject();
-    Account account = Account.builder().id(id).password(password).build();
+    Account oldAccount = accountModel.getAccount(Account.builder().name(name).password(oldPassword).build());
+
+    if (oldAccount == null) {
+      jsonObject.put("result", "faild");
+      jsonObject.put("message", "用户名密码错误");
+      return jsonObject;
+    }
+    Long id = oldAccount.getId();
+    Account account = Account.builder().id(id).password(newPassword).build();
     try {
       accountModel.updateAccount(account);
       jsonObject.put("message", JSONObject.toJSONString(account));
