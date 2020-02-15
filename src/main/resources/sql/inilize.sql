@@ -1,3 +1,5 @@
+create database book_manage;
+use book_manage;
 create table `t_account`(
   id bigint(20) not null AUTO_INCREMENT primary key,
   is_manager char(1) not null default '0',
