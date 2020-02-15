@@ -352,6 +352,7 @@ function setResources(resources, tabId) {
                 "<button data-toggle='modal' data-target='#myModal' att1='"+resource.bookId+"' style='cursor: pointer; border-radius: 6px; background-color: #4CAF50;padding: 3px 21px;margin: 4px; display: "+ifAdmin+";'>审核</button>" +
                 "</div></div></div>";*/
                 contentHtml +="<tr>"+
+                    "<td>"+(Number.parseInt(i)+1)+"</td>"+
                     "<td><a href='down.html?"+param+"' target='_blank' style='cursor: pointer'>"+resource.title+"</a></td>"+
                     "<td>"+resource.authorName+"</td>"+
                     "<td>"+resource.pushDate+"</td>"+
