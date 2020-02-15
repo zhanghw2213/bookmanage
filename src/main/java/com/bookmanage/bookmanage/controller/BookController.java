@@ -53,7 +53,6 @@ public class BookController {
       if (offset < partitions.size()) {
         response.setBooks(partitions.get(offset));
       }
-      response.setBooks(books);
       response.setResult(Constant.SUCCESS);
     }catch (Throwable e){
       response.setResult(Constant.FAILED);
