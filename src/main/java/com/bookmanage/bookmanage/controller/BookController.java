@@ -94,20 +94,6 @@ public class BookController {
     return JSON.toJSONString(response);
   }
 
-  @PostMapping
-  @RequestMapping("/verify")
-  public JSONObject verify(Long bookId,Boolean verified) {
-    JSONObject jsonObject = new JSONObject();
-    try {
-      bookModel.updateBook(Book.builder().id(bookId).verifyed(verified).pushDate(System.currentTimeMillis()).build());
-      jsonObject.put(Constant.RESULT, Constant.SUCCESS);
-    }catch (Throwable e) {
-      jsonObject.put(Constant.RESULT, Constant.FAILED);
-      jsonObject.put(Constant.ERROR, e);
-    }
-    return jsonObject;
-  }
-
   @PutMapping
   @RequestMapping("/submit")
   public JSONObject submit(SubmitRequest request) {
@@ -119,6 +105,7 @@ public class BookController {
     book.setSource(request.getSource());
     book.setTitle(request.getTittle());
     book.setUserName(request.getUserName());
+    book.setPushDate(System.currentTimeMillis());
     try {
       bookModel.saveBook(book);
       jsonObject.put(Constant.RESULT, Constant.SUCCESS);
