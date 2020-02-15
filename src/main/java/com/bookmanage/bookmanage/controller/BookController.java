@@ -11,6 +11,7 @@ import com.bookmanage.bookmanage.model.BookSearch;
 import com.bookmanage.bookmanage.request.SubmitRequest;
 import com.bookmanage.bookmanage.utils.FileUtil;
 import com.google.common.collect.Lists;
+import org.apache.tomcat.jni.Local;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,7 +107,7 @@ public class BookController {
     book.setSource(request.getSource());
     book.setTitle(request.getTittle());
     book.setUserName(request.getUserName());
-    book.setPushDate(System.currentTimeMillis());
+    book.setPushDate(Long.parseLong(LocalDate.now().toString().replaceAll("-","")));
     try {
       bookModel.saveBook(book);
       jsonObject.put(Constant.RESULT, Constant.SUCCESS);
