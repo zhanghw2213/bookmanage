@@ -3,7 +3,7 @@ create table `t_account`(
   is_manager char(1) not null default '0',
   name varchar(10) not null ,
   password varchar(100) not null ,
-  sex varchar(2) not null ,
+  sex varchar(2),
   age int,
   address varchar(20)
 );
