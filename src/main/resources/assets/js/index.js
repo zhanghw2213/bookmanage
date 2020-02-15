@@ -132,16 +132,18 @@ function updatePassword() {
 }
 
 function getUserInfo() {
-    layer.load(1);
-    $.get("/user/info", function (data) {
+    // layer.load(1);
+    app.loginTime = new Date().format("yyyy-MM-dd hh:mm:ss");
+    app.username = localStorage.getItem("name");
+    /*$.get("/user/info", function (data) {
         layer.closeAll();
         try {
             var json = JSON.parse(data);
             userInfo = json;
             app.permission = json.permission;
-            /** @namespace app.lastLoginTime */
+            /!** @namespace app.lastLoginTime *!/
             app.loginTime = new Date(json.lastLoginTime).format("yyyy-MM-dd hh:mm:ss");
-            /** @namespace json.avator */
+            /!** @namespace json.avator *!/
             if (!isEmpty(json.avatar)) {
                 $("#avatar").attr("src", json.avatar);
             }
@@ -150,9 +152,9 @@ function getUserInfo() {
             $("#real-name").val(json.realName);
             checkEmailChange(json.email);
         } catch (e) {
-            window.location.href = "/signin";
+            //window.location.href = "/signin";
         }
-    });
+    });*/
 }
 
 function showAvatarModal() {
@@ -297,7 +299,7 @@ function getUserDownloaded() {
         try {
             setResources(JSON.parse(data), currentTab);
         } catch (e) {
-            window.location.href = "/signin";
+            //window.location.href = "/signin";
         }
     });
 }
@@ -305,7 +307,8 @@ function getUserDownloaded() {
 function getUserUploaded() {
     currentTab = "#uploaded-content";
     layer.load(1);
-    $.get("/book/user/uploaded", {offset: offset, search: search}, function (data) {
+    var userId = localStorage.getItem("userId");
+    $.get("/book/user/upload", {offset: offset, search: search,userId:userId}, function (data) {
         layer.closeAll();
         setResources(JSON.parse(data), currentTab);
         /*try {

@@ -113,7 +113,25 @@
             </div>
             <!--我的资源-->
             <div class="tab-pane" id="uploaded-tab">
-                <div id="uploaded-content"></div>
+                <div>
+                    <table class="default-table">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>论文题目</th>
+                            <th>论文作者</th>
+                            <th>发表时间</th>
+                            <th>论文出处</th>
+                            <th>上传者</th>
+                            <th>是否通过审核</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="uploaded-content">
+
+                        </tbody>
+                    </table>
+                </div>
                 <button class="btn btn-link btn-block btn-lg" onclick="offset += 1;getPage();"><b><i
                         class="glyphicon glyphicon-arrow-down"></i> 获取更多</b></button>
                 <br/><br/>
@@ -129,6 +147,10 @@
                 <!--权限和登陆信息-->
                 <div class="row content-box rounded">
                     <div class="col-sm-1 col-1 col-md-1"></div>
+                    <!--<div class="col-sm-3 col-5 text-right">
+                        <img onclick="showAvatarModal();" src="/assets/img/default-user.jpg" id="avatar"
+                             class="rounded-circle avatar"/>
+                    </div>-->
                     <div class="col-sm-11 col-11 col-md-6">
                         <br/>
                         <div class="row">
@@ -144,7 +166,6 @@
                                 </div>
                             </div>
                         </div>
-                        <br/>
                         <div class="row">
                             <div class="col-sm-3 col-5 text-right">
                                 <span class="text-right">登陆时间：</span>
@@ -153,66 +174,74 @@
                                 <span class="text-left">{{loginTime}}</span>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-5 text-right">
+                                <span class="text-right">用户名：</span>
+                            </div>
+                            <div class="col-sm-6 col-7 text-left">
+                                <span class="text-left">{{username}}</span>
+                            </div>
+                        </div>
                         <br/>
                     </div>
                 </div>
                 <br/>
                 <!--基本信息-->
-                <div class="row content-box rounded">
-                    <div class="col-sm-1 col-1 col-md-1"></div>
-                    <div class="col-sm-11 col-11 col-md-6">
-                        <br/>
-                        <div class="row">
-                            <div class="col-sm-3 col-5 text-right">
-                                <img onclick="showAvatarModal();" src="/assets/img/default-user.jpg" id="avatar"
-                                     class="rounded-circle avatar"/>
-                            </div>
-                            <div class="col-sm-6 col-7 text-left padding-top-3">
-                                <h3>{{username}}</h3>
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-sm-3 col-5 text-right padding-top-1">
-                                <span class="text-right">真实姓名：</span>
-                            </div>
-                            <div class="col-sm-6 col-7 text-left">
-                                <input placeholder="我的真实姓名" id="real-name" type="text" class="form-control"/>
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-sm-3 col-5 text-right padding-top-1">
-                                <span class="text-right">邮箱：</span>
-                            </div>
-                            <div class="col-sm-6 col-7 text-left">
-                                <input placeholder="我的邮箱" id="email" type="email" class="form-control email"/>
-                                <label class="form-check-label text-danger">{{emailErrorTip}}</label>
-                            </div>
-                        </div>
-                        <div class="row verify-code-div" style="display: none;">
-                            <div class="col-sm-8 offset-sm-1 offset-2 col-10 row">
-                                <div class="col-sm-7 col-6 col-md-7">
-                                    <input type="number" id="email-verify-code" maxlength="6"
-                                           class="form-control email-verify-code"
-                                           placeholder="收到的6位验证码"/>
-                                    <label class="form-check-label text-danger">{{emailVerifyStatus}}</label>
-                                </div>
-                                <div class="col-sm-4 col-md-54 col-5 offset-1 text-right padding-0">
-                                    <button class="btn btn-outline-info sendVerifyCode btn-block">发送验证码</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-1 col-2"></div>
-                            <div class="col-sm-8 col-10 text-right">
-                                <button class="btn btn-primary btn-block" onclick="saveInfo();">保存</button>
-                            </div>
-                        </div>
-                        <br/>
-                    </div>
-                </div>
-                <br/>
+                <!--<div class="row content-box rounded">-->
+                    <!--<div class="col-sm-1 col-1 col-md-1"></div>-->
+                    <!--<div class="col-sm-11 col-11 col-md-6">-->
+                        <!--&lt;!&ndash;<br/>-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-sm-3 col-5 text-right">-->
+                                <!--<img onclick="showAvatarModal();" src="/assets/img/default-user.jpg" id="avatar"-->
+                                     <!--class="rounded-circle avatar"/>-->
+                            <!--</div>-->
+                            <!--<div class="col-sm-6 col-7 text-left padding-top-3">-->
+                                <!--<h3>{{username}}</h3>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<br/>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="row">-->
+                            <!--<div class="col-sm-3 col-5 text-right padding-top-1">-->
+                                <!--<span class="text-right">真实姓名：</span>-->
+                            <!--</div>-->
+                            <!--<div class="col-sm-6 col-7 text-left">-->
+                                <!--<input placeholder="我的真实姓名" id="real-name" type="text" class="form-control"/>-->
+                            <!--</div>-->
+                        <!--</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<br/>-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-sm-3 col-5 text-right padding-top-1">-->
+                                <!--<span class="text-right">邮箱：</span>-->
+                            <!--</div>-->
+                            <!--<div class="col-sm-6 col-7 text-left">-->
+                                <!--<input placeholder="我的邮箱" id="email" type="email" class="form-control email"/>-->
+                                <!--<label class="form-check-label text-danger">{{emailErrorTip}}</label>-->
+                            <!--</div>-->
+                        <!--</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="row verify-code-div" style="display: none;">-->
+                            <!--<div class="col-sm-8 offset-sm-1 offset-2 col-10 row">-->
+                                <!--<div class="col-sm-7 col-6 col-md-7">-->
+                                    <!--<input type="number" id="email-verify-code" maxlength="6"-->
+                                           <!--class="form-control email-verify-code"-->
+                                           <!--placeholder="收到的6位验证码"/>-->
+                                    <!--<label class="form-check-label text-danger">{{emailVerifyStatus}}</label>-->
+                                <!--</div>-->
+                                <!--<div class="col-sm-4 col-md-54 col-5 offset-1 text-right padding-0">-->
+                                    <!--<button class="btn btn-outline-info sendVerifyCode btn-block">发送验证码</button>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="row">-->
+                            <!--<div class="col-sm-1 col-2"></div>-->
+                            <!--<div class="col-sm-8 col-10 text-right">-->
+                                <!--<button class="btn btn-primary btn-block" onclick="saveInfo();">保存</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<br/>&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<br/>-->
                 <!--修改密码-->
                 <div class="row content-box rounded">
                     <div class="col-sm-1 col-1 col-md-1"></div>
@@ -252,8 +281,8 @@
                             <div class="col-sm-8 col-10 text-right">
                                 <button class="btn btn-warning btn-block" onclick="updatePassword();">修改密码</button>
                                 <br/>
-                                <a href="signin.html#reset" class="btn btn-block btn-danger" target="_blank">忘记密码</a>
-                                <br/>
+                                <!--<a href="signin.html#reset" class="btn btn-block btn-danger" target="_blank">忘记密码</a>-->
+                                <!--<br/>-->
                                 <a href="signin.html" class="btn btn-block btn-danger">注销登录</a>
                             </div>
                         </div>

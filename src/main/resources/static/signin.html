@@ -38,7 +38,7 @@
                         <button class="btn btn-link text-success" onclick="switchToRegister();">还没有账号？</button>
                     </div>
                     <div class="col-sm-6 col-6 col-md-6 text-right">
-                        <button class="btn btn-link text-danger" onclick="switchToReset();">忘记密码？</button>
+                        <button class="btn btn-link text-danger" onclick="switchToReset();">重置密码？</button>
                     </div>
                 </div>
             </div>
@@ -83,10 +83,10 @@
             </div>
             <div id="reset-div" style="display: none;">
                 <h3>重置密码</h3><br/>
-                <input type="email" class="form-control email" id="res-email" maxlength="100" placeholder="注册的邮箱"/>
-                <label class="form-check-label text-danger">{{emailErrorTip}}</label>
+                <!--<input type="email" class="form-control email" id="res-email" maxlength="100" placeholder="注册的邮箱"/>-->
+                <!--<label class="form-check-label text-danger">{{emailErrorTip}}</label>-->
                 <br/>
-                <div class="form-inline text-justify-all row">
+                <!--<div class="form-inline text-justify-all row">
                     <div class="col-sm-7 col-md-7 col-6">
                         <input type="number" id="res-email-verify" maxlength="6" class="form-control email-verify-code"
                                placeholder="收到的6位验证码"/>
@@ -94,16 +94,22 @@
                     <div class="col-sm-5 col-md-5 col-6 text-right">
                         <button class="btn btn-outline-info sendVerifyCode btn-block">发送验证码</button>
                     </div>
-                </div>
-                <label class="form-check-label text-danger">{{emailVerifyStatus}}</label>
+                </div>-->
+                <!--<label class="form-check-label text-danger">{{emailVerifyStatus}}</label>
+                <br/>-->
+                <input type="text" id="resetusername" maxlength="50" class="form-control" placeholder="用户名"/>
+                <br/>
+                <input type="password" id="old-password" maxlength="50" class="form-control password"
+                       placeholder="请输入旧密码">
+                <label class="form-check-label text-danger"></label>
                 <br/>
                 <input type="password" id="res-password" maxlength="50" class="form-control password"
                        placeholder="请设置你的新密码">
-                <label class="form-check-label text-danger">{{passwordVerify}}</label>
+                <label class="form-check-label text-danger"></label>
                 <br/>
                 <input type="password" id="res-confirm-password" max="50" class="form-control confirm-password"
                        placeholder="请确认你的新密码">
-                <label class="form-check-label text-danger">{{passwordConfirm}}</label>
+                <label class="form-check-label text-danger"></label>
                 <br/>
                 <div class="text-center row">
                     <div class="col-6 col-sm-6">
