@@ -67,6 +67,10 @@ public class BookController {
               .collect(Collectors.toList());
        book.setPath(StringUtils.join(absolutePaths, ','));
     });
+    books.forEach(book -> {
+              book.setPath(book.getPath().replaceAll("\\\\", "/"));
+            }
+    );
   }
 
   @GetMapping
@@ -79,10 +83,6 @@ public class BookController {
     try {
       List<Book> books = bookModel.getBooks(BookSearch.builder().verifyed(flag).keyWord(search).build());
       transBookPath(books);
-      books.forEach(book -> {
-        book.setPath(book.getPath().replaceAll("\\\\", "/"));
-              }
-      );
       List<List<Book>> partitions = Lists.partition(books,10);
       if (offset < partitions.size()) {
         response.setBooks(partitions.get(offset));
