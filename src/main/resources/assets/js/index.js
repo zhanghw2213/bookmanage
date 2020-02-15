@@ -187,7 +187,6 @@ $(document).ready(function () {
     $("#search").keyup(function () {
         /** @namespace window.event.keyCode */
         search = $('#search').val();
-        console.log(search)
         if (window.event.keyCode === 13) {
             search = $('#search').val();
             offset = 0;
@@ -324,7 +323,6 @@ function getResource(orderBy) {
         offset: offset,
         search: search
     }, function (data) {
-        console.log(data)
         layer.closeAll();
         setResources(JSON.parse(data), currentTab);
     });
@@ -335,13 +333,11 @@ function setResources(resources, tabId) {
     var ifAdmin = isManager=='true'? 'block':'none';
     var contentHtml = "";
     search = "";
-    console.log(resources.books)
     if (resources.books != null && resources.books != undefined && resources.books.length < 1) {
         offset -= 1;
         alerts("糟糕，没有数据了");
     } else {
         $.each(resources.books, function (i, resource) {
-            console.log(resource)
             var param = "title="+resource.title+"&authorName="+resource.authorName+"&pushDate="+resource.pushDate+"&path="+resource.path+"&source="+resource.source;
             param= param.replace(/\\/g,"@").replace(/\//g,"@");
             param = encodeURI(encodeURI(param));
