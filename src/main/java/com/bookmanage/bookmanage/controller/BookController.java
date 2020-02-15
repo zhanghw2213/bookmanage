@@ -10,6 +10,7 @@ import com.bookmanage.bookmanage.model.BookModel;
 import com.bookmanage.bookmanage.model.BookSearch;
 import com.bookmanage.bookmanage.request.SubmitRequest;
 import com.bookmanage.bookmanage.utils.FileUtil;
+import com.google.common.collect.Lists;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -26,13 +27,6 @@ import java.util.stream.Collectors;
 public class BookController {
   @Autowired
   private BookModel bookModel;
-    @RequestMapping(value = "/submit", method = RequestMethod.PUT)
-    public JSONObject getAccount(String tittle, String authorName, String Source, String fileList) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("result",true);
-        return jsonObject;
-    }
-
   @PostMapping
   @RequestMapping("/save")
   public JSONObject save(Book book) {
@@ -67,13 +61,13 @@ public class BookController {
               .stream(book.getPath().split(","))
               .map(path -> System.getProperty("user.dir") + FileUtil.FILE_PATH + path)
               .collect(Collectors.toList());
-      book.setPath(StringUtils.join(absolutePaths, ','));
+       book.setPath(StringUtils.join(absolutePaths, ','));
     });
   }
 
   @GetMapping
   @RequestMapping("/all")
-  public String getAllBooks(String search) {
+  public String getAllBooks(String search, Integer offset) {
     GetBooksResponse response = new GetBooksResponse();
     HttpServletRequest request = AccountController.getRequest();
     Account account = (Account)request.getSession().getAttribute("account_info");
@@ -81,7 +75,14 @@ public class BookController {
     try {
       List<Book> books = bookModel.getBooks(BookSearch.builder().verifyed(flag).keyWord(search).build());
       transBookPath(books);
-      response.setBooks(books);
+      books.forEach(book -> {
+        book.setPath(book.getPath().replaceAll("\\\\", "/"));
+              }
+      );
+      List<List<Book>> partitions = Lists.partition(books,10);
+      if (offset < partitions.size()) {
+        response.setBooks(partitions.get(offset));
+      }
       response.setResult(Constant.SUCCESS);
     }catch (Throwable e){
       response.setResult(Constant.FAILED);
@@ -113,6 +114,7 @@ public class BookController {
     book.setPath(StringUtils.join(request.getFileList(), ','));
     book.setSource(request.getSource());
     book.setTitle(request.getTittle());
+    book.setUserName(request.getUserName());
     try {
       bookModel.saveBook(book);
       jsonObject.put(Constant.RESULT, Constant.SUCCESS);
@@ -122,5 +124,18 @@ public class BookController {
     }
     return jsonObject;
   }
-
+  @PutMapping
+  @RequestMapping("/audit")
+  public JSONObject submit(Long bookId, Integer auditCode) {
+    JSONObject jsonObject = new JSONObject();
+    Boolean verdifyed = auditCode.equals(1) ? Boolean.TRUE : Boolean.FALSE;
+    try {
+      bookModel.updateBook(Book.builder().verifyed(verdifyed).id(bookId).build());
+      jsonObject.put(Constant.RESULT, Constant.SUCCESS);
+    }catch (Throwable e) {
+      jsonObject.put(Constant.RESULT, Constant.FAILED);
+      jsonObject.put(Constant.SUCCESS, e);
+    }
+    return jsonObject;
+  }
 }

@@ -35,7 +35,7 @@
         </where>
     </select>
     <insert id="saveBook" parameterType="com.bookmanage.bookmanage.bean.Book" >
-        insert into t_book (account_id,title,author_name,source,path,verifyed,push_date) value (#{accountId},#{title},#{authorName},#{source},#{path},#{verifyed},#{pushDate})
+        insert into t_book (account_id,title,author_name,source,path,verifyed,push_date,user_name) value (#{accountId},#{title},#{authorName},#{source},#{path},#{verifyed},#{pushDate},#{userName})
     </insert>
     <update id="updateBook" parameterType="com.bookmanage.bookmanage.bean.Book">
         update t_book

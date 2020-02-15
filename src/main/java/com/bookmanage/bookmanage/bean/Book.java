@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class Book {
   private Long id;
   private Long accountId;
+  private String userName;
   private String title;
   private String authorName;
   private String source;
