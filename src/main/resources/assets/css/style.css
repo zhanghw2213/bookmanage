@@ -149,6 +149,9 @@ table.default-table thead tr th{
     font-weight: bold;
     text-align: center;
 }
+table.default-table tbody tr td{
+    text-align: center !important;
+}
 
 table.default-table tbody tr td.tac{
     text-align: center;
