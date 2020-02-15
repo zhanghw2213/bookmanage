@@ -18,7 +18,7 @@ function responseTip(data) {
 }
 
 function checkPassword(password, passwordConfirm) {
-    return password.length >= userConfig.password.minLength && password.length <= userConfig.password.maxLength && password === passwordConfirm;
+    return password ==passwordConfirm;
 }
 
 function sendVerifyCode(email, eventSrc) {

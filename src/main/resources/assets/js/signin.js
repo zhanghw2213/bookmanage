@@ -58,43 +58,36 @@ function reset() {
 
 function register() {
     /** @namespace globalConfig.allowRegister */
-    if (globalConfig.allowRegister) {
-        var username = $("#username").val();
-        var email = $("#email").val();
-        var verifyCode = $("#email-verify-code").val();
-        var password = $("#reg-password").val();
-        var passwordConfirm = $("#confirm-password").val();
-        var canRegister = username.match(userConfig.usernameMatch.pattern) && (!userConfig.emailVerify || 6 === verifyCode.length) && isEmail(email) && checkPassword(password, passwordConfirm);
-        if (submit() && canRegister) {
-            layer.load(1);
-            $.post("/user/register", {
-                username: username,
-                email: email,
-                password: password,
-                code: verifyCode
-            }, function (data) {
-                layer.closeAll();
-                var json = JSON.parse(data);
-                if (json.status === "success") {
-                    alerts("注册成功");
-                    switchToLogin();
-                } else {
-                    alerts(json.message);
-                }
-            });
-        } else {
-            alerts("有非法内容，无法提交");
-        }
+    var username = $("#reusername").val();
+    var password = $("#rereg-password").val();
+    var passwordConfirm = $("#reconfirm-password").val();
+    var canRegister = checkPassword(password, passwordConfirm);
+    console.log(canRegister)
+    if (canRegister) {
+        $.post("/user/create", {
+            name: username,
+            password: password,
+        }, function (data) {
+            layer.closeAll();
+            var json = JSON.parse(data);
+            if (json.flag == true) {
+                alerts("注册成功");
+                switchToLogin();
+            } else {
+                alerts(json.message);
+            }
+        });
     } else {
-        alerts("该站点已禁止注册，请联系管理员");
+        alerts("有非法内容，无法提交");
     }
+
 }
 
 function login() {
     var name = $("#loginName").val();
     var password = $("#password").val();
     var remember = document.getElementById("remember").checked;
-    if (username && password) {
+    if (name && password) {
         $.ajax({
             url: "/user/login", type: "PUT", data: {
                 name: name,
@@ -102,16 +95,7 @@ function login() {
                 remember:remember
             }, success: function (data) {
                 console.log(data)
-
                 if (data.flag==true){
-                    if (data.token != null && data.token != undefined){
-                        document.cookie = "token=" + data.token;
-
-                    }
-                    console.log(data.account)
-                    localStorage.setItem("isManager",data.account.isManager);
-                    localStorage.setItem("userId",data.account.id);
-                    localStorage.setItem("userName",data.account.name);
                     window.location.href = "/index";
                 } else {
                     alerts("用户名或密码不正确");

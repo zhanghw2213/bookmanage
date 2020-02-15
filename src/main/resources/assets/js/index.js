@@ -338,6 +338,7 @@ function setResources(resources, tabId) {
         alerts("糟糕，没有数据了");
     } else {
         $.each(resources.books, function (i, resource) {
+            console.log(resource)
             var param = "title="+resource.title+"&authorName="+resource.authorName+"&pushDate="+resource.pushDate+"&path="+resource.path+"&source="+resource.source;
             param= param.replace(/\\/g,"@").replace(/\//g,"@");
             param = encodeURI(encodeURI(param));
@@ -355,7 +356,7 @@ function setResources(resources, tabId) {
                 "<td>"+resource.source+"</td>"+
                 "<td>"+resource.userName+"</td>"+
                 "<td id='"+"+resource.bookId+"+"'>"+(resource.verifyed==null?'未审核':(resource.verifyed==1?'通过':'不通过'))+"</td>"+
-                "<td><a onclick='showModel("+resource.bookId+")' style='cursor: pointer; text-align: center; margin: 4px; display: "+ifAdmin+";' att1='"+resource.bookId+"' href='#' >审核</a></td>"+
+                "<td><a onclick='showModel("+resource.id+")' style='cursor: pointer; text-align: center; margin: 4px; display: "+ifAdmin+";' att1='"+resource.id+"' href='#' >审核</a></td>"+
             "</tr>";
         });
         if (offset > 0) {
@@ -385,10 +386,12 @@ function audit(auditCode) {
             auditCode: auditCode
         }, success: function (data) {
             if (data.result == "success"){
-                if (auditCode == 1)
+                /*if (auditCode == 1)
                     $("#"+bookId).html("通过");
                  else
-                    $("#"+bookId).html("不通过");
+                    $("#"+bookId).html("不通过");*/
+                $("#search").blur();
+                $("#myModal").modal("hide");
                 alerts("审核完成");
             } else
                 alerts("审核失败");
