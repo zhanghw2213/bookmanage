@@ -113,7 +113,25 @@
             </div>
             <!--我的资源-->
             <div class="tab-pane" id="uploaded-tab">
-                <div id="uploaded-content"></div>
+                <div>
+                    <table class="default-table">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>论文题目</th>
+                            <th>论文作者</th>
+                            <th>发表时间</th>
+                            <th>论文出处</th>
+                            <th>上传者</th>
+                            <th>是否通过审核</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="uploaded-content">
+
+                        </tbody>
+                    </table>
+                </div>
                 <button class="btn btn-link btn-block btn-lg" onclick="offset += 1;getPage();"><b><i
                         class="glyphicon glyphicon-arrow-down"></i> 获取更多</b></button>
                 <br/><br/>

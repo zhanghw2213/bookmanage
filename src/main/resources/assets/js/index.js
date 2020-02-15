@@ -307,7 +307,8 @@ function getUserDownloaded() {
 function getUserUploaded() {
     currentTab = "#uploaded-content";
     layer.load(1);
-    $.get("/book/user/uploaded", {offset: offset, search: search}, function (data) {
+    var userId = localStorage.getItem("userId");
+    $.get("/book/user/upload", {offset: offset, search: search,userId:userId}, function (data) {
         layer.closeAll();
         setResources(JSON.parse(data), currentTab);
         /*try {
