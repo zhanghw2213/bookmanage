@@ -42,11 +42,15 @@ public class BookController {
 
   @GetMapping
   @RequestMapping("/user/upload")
-  public String getBooksByUser(Long userId,String search) {
+  public String getBooksByUser(Long userId,String search,Integer offset) {
     GetBooksResponse response = new GetBooksResponse();
     try {
       List<Book> books = bookModel.getBooks(BookSearch.builder().accountId(userId).keyWord(search).build());
       transBookPath(books);
+      List<List<Book>> partitions = Lists.partition(books,10);
+      if (offset < partitions.size()) {
+        response.setBooks(partitions.get(offset));
+      }
       response.setBooks(books);
       response.setResult(Constant.SUCCESS);
     }catch (Throwable e){
@@ -63,6 +67,10 @@ public class BookController {
               .collect(Collectors.toList());
        book.setPath(StringUtils.join(absolutePaths, ','));
     });
+    books.forEach(book -> {
+              book.setPath(book.getPath().replaceAll("\\\\", "/"));
+            }
+    );
   }
 
   @GetMapping
@@ -75,10 +83,6 @@ public class BookController {
     try {
       List<Book> books = bookModel.getBooks(BookSearch.builder().verifyed(flag).keyWord(search).build());
       transBookPath(books);
-      books.forEach(book -> {
-        book.setPath(book.getPath().replaceAll("\\\\", "/"));
-              }
-      );
       List<List<Book>> partitions = Lists.partition(books,10);
       if (offset < partitions.size()) {
         response.setBooks(partitions.get(offset));
@@ -88,20 +92,6 @@ public class BookController {
       response.setResult(Constant.FAILED);
     }
     return JSON.toJSONString(response);
-  }
-
-  @PostMapping
-  @RequestMapping("/verify")
-  public JSONObject verify(Long bookId,Boolean verified) {
-    JSONObject jsonObject = new JSONObject();
-    try {
-      bookModel.updateBook(Book.builder().id(bookId).verifyed(verified).pushDate(System.currentTimeMillis()).build());
-      jsonObject.put(Constant.RESULT, Constant.SUCCESS);
-    }catch (Throwable e) {
-      jsonObject.put(Constant.RESULT, Constant.FAILED);
-      jsonObject.put(Constant.ERROR, e);
-    }
-    return jsonObject;
   }
 
   @PutMapping
@@ -115,6 +105,7 @@ public class BookController {
     book.setSource(request.getSource());
     book.setTitle(request.getTittle());
     book.setUserName(request.getUserName());
+    book.setPushDate(System.currentTimeMillis());
     try {
       bookModel.saveBook(book);
       jsonObject.put(Constant.RESULT, Constant.SUCCESS);
