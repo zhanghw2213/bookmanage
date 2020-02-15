@@ -187,20 +187,19 @@ $(document).ready(function () {
     $("#search").keyup(function () {
         /** @namespace window.event.keyCode */
         search = $('#search').val();
+        console.log(search)
         if (window.event.keyCode === 13) {
             search = $('#search').val();
             offset = 0;
             getPage();
         }
     });
-    /*$("#search").blur(function () {
-        /!** @namespace window.event.keyCode *!/
-        if (window.event.keyCode === 13) {
-            search = $('#search').val();
-            offset = 0;
-            getPage();
-        }
-    });*/
+    $("#search").blur(function () {
+        /** @namespace window.event.keyCode */
+        search = $('#search').val();
+        offset = 0;
+        getPage();
+    });
     $(".content-filter").change(function () {
         offset = 0;
         getResource(getOrderBy());
@@ -336,7 +335,8 @@ function setResources(resources, tabId) {
     var ifAdmin = isManager=='true'? 'block':'none';
     var contentHtml = "";
     search = "";
-    if (resources.books.length < 1) {
+    console.log(resources.books)
+    if (resources.books != null && resources.books != undefined && resources.books.length < 1) {
         offset -= 1;
         alerts("糟糕，没有数据了");
     } else {
@@ -365,6 +365,7 @@ function setResources(resources, tabId) {
         if (offset > 0) {
             $(tabId).append(contentHtml);
         } else {
+            $(tabId).html("");
             $(tabId).html(contentHtml);
         }
         // $(tabId).html(contentHtml);
