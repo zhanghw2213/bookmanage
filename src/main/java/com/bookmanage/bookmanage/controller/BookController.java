@@ -42,11 +42,15 @@ public class BookController {
 
   @GetMapping
   @RequestMapping("/user/upload")
-  public String getBooksByUser(Long userId,String search) {
+  public String getBooksByUser(Long userId,String search,Integer offset) {
     GetBooksResponse response = new GetBooksResponse();
     try {
       List<Book> books = bookModel.getBooks(BookSearch.builder().accountId(userId).keyWord(search).build());
       transBookPath(books);
+      List<List<Book>> partitions = Lists.partition(books,10);
+      if (offset < partitions.size()) {
+        response.setBooks(partitions.get(offset));
+      }
       response.setBooks(books);
       response.setResult(Constant.SUCCESS);
     }catch (Throwable e){
