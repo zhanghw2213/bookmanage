@@ -357,8 +357,8 @@ function setResources(resources, tabId) {
                     "<td>"+resource.pushDate+"</td>"+
                     "<td>"+resource.source+"</td>"+
                     "<td>"+resource.userName+"</td>"+
-                    "<td>"+(resource.verifyed==null?'未审核':(resource.verifyed==1?'通过':'不通过'))+"</td>"+
-                    "<td><a style='cursor: pointer; text-align: center; margin: 4px; display: "+ifAdmin+";' data-toggle='modal' data-target='#myModal' att1='"+resource.bookId+"' href='#' >审核</a></td>"+
+                    "<td id='"+"+resource.bookId+"+"'>"+(resource.verifyed==null?'未审核':(resource.verifyed==1?'通过':'不通过'))+"</td>"+
+                    "<td><a onclick='showModel("+resource.bookId+")' style='cursor: pointer; text-align: center; margin: 4px; display: "+ifAdmin+";' att1='"+resource.bookId+"' href='#' >审核</a></td>"+
                 "</tr>";
         });
         if (offset > 0) {
@@ -372,18 +372,30 @@ function setResources(resources, tabId) {
     }
 }
 
-function audit(auditCode) {
-    //$("#myModal").modal("show");
-    // layer.alert(
-    let bookId = $(this).attr("att1");
-    /*$.ajax({
-        url: "/book/audit", type: "PUT", data: {
-            bookId: bookId
-        }, success: function (data) {
+//展示审核模态框
+function showModel(bookId) {
+    $("#myModal").modal("show");
+    $("#bookIdTemp").val(bookId);
+}
 
+//审核
+function audit(auditCode) {
+    var bookId = $("#bookIdTemp").val();
+    $.ajax({
+        url: "/book/audit", type: "PUT", data: {
+            bookId: bookId,
+            auditCode: auditCode
+        }, success: function (data) {
+            if (data.result == "success"){
+                if (auditCode == 1)
+                    $("#"+bookId).html("通过");
+                 else
+                    $("#"+bookId).html("不通过");
+                alerts("审核完成");
+            } else
+                alerts("审核失败");
         }
-    });*/
-    alert("审核通过");
+    });
 }
 
 var srcContentBox;
