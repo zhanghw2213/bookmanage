@@ -150,7 +150,7 @@ function getUserInfo() {
             $("#real-name").val(json.realName);
             checkEmailChange(json.email);
         } catch (e) {
-            window.location.href = "/signin";
+            //window.location.href = "/signin";
         }
     });
 }
@@ -297,7 +297,7 @@ function getUserDownloaded() {
         try {
             setResources(JSON.parse(data), currentTab);
         } catch (e) {
-            window.location.href = "/signin";
+            //window.location.href = "/signin";
         }
     });
 }

@@ -28,31 +28,30 @@ let name = cookieValue.substring(cookieValue.indexOf("\"")+1,cookieValue.indexOf
 let password = cookieValue.substring(cookieValue.indexOf("@@")+2,cookieValue.length-1);
 $("#username").val(name);
 $("#email").val(password);
+
+//重置密码
 function reset() {
-    var email = $("#res-email").val();
-    var code = $("#res-email-verify").val();
-    var password = $("#res-password").val();
+    var name = $("#resetusername").val();
+    var oldPassword = $("#old-password").val();
+    var newPassword = $("#res-password").val();
     var passwordConfirm = $("#res-confirm-password").val();
-    var isValid = isEmail(email) && 6 === code.length && checkPassword(password, passwordConfirm);
-    if (submit() && isValid) {
-        layer.load(1);
+    var isValid = checkPassword(newPassword, passwordConfirm);
+    if (isValid) {
         $.ajax({
-            url: "/user/password/reset",
-            type: "PUT",
-            data: {email: email, code: code, password: password},
+            url: "/user/reset",
+            type: "POST",
+            data: {name: name, oldPassword: oldPassword, newPassword: newPassword},
             success: function (data) {
-                layer.closeAll();
-                var json = JSON.parse(data);
-                if (json.status === "success") {
+                if (data.result == "success") {
                     alerts("密码重置成功");
                     switchToLogin();
                 } else {
-                    alerts(json.message);
+                    alerts(data.message);
                 }
             }
         });
     } else {
-        alerts("格式不合法，无法提交");
+        alerts("新密码和确认密码不一致");
     }
 }
 
@@ -67,10 +66,10 @@ function register() {
         $.post("/user/create", {
             name: username,
             password: password,
+            isManager:0
         }, function (data) {
             layer.closeAll();
-            var json = JSON.parse(data);
-            if (json.flag == true) {
+            if (data.flag == true) {
                 alerts("注册成功");
                 switchToLogin();
             } else {
