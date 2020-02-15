@@ -101,7 +101,7 @@
             var ahtml = '';
             for (var a of pathArray){
                 var fileName = a.substring(a.lastIndexOf("/")+1);
-                ahtml += '<h4><a data-toggle="tooltip" class="visit-url" href="'+a+'" target="_blank" data-description="" title="" data-original-title="">'+fileName+'</a></h4>';
+                ahtml += '<h4><a download="'+fileName+'" onclick="openFile()" data-toggle="tooltip" class="visit-url" href="#" att1="'+a+'"  data-description="" title="" data-original-title="">'+fileName+'</a></h4>';
             }
             $("#attachments").html(ahtml);
 
@@ -111,7 +111,6 @@
         $("#"+kv[0]).val(temp);
 
     }
-
 </script>
 </body>
 </html>
