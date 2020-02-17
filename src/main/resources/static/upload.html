@@ -90,6 +90,7 @@
         let author_name = $("#author_name").val();
         let source = $("#source").val();
         let push_date = $("#push_date").val();
+        push_date = push_date.replace("-","").replace("-","");
         if (isblank(title) || isblank(author_name) || isblank(source) || isblank(push_date)){
             alerts("请补充完整信息后提交");
             return false;
@@ -101,7 +102,8 @@
                 tittle: title,
                 authorName: author_name,
                 source: source,
-                fileList:fileList.toString()
+                fileList:fileList.toString(),
+                pushDate:push_date
             }, success: function (data) {
                 console.log(data)
                 if (data.result=="success"){
